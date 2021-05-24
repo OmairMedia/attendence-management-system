@@ -1,6 +1,11 @@
 <template>
-  <div class="">
+  <div class="contact">
     <nav-bar />
+    <div class="container mt-4">
+      <h1>Contact Us</h1>
+      <!-- Contact Form -->
+      <!-- Map -->
+    </div>
   </div>
 </template>
 
@@ -15,8 +20,4 @@ export default Vue.extend({
 })
 </script>
 
-<style>
-.container {
-  min-height: 100vh;
-}
-</style>
+<style></style>
