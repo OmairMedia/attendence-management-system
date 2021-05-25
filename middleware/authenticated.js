@@ -3,4 +3,9 @@ export default function ({ store, redirect }) {
   if (!store.state.authenticated) {
     return redirect('/login')
   }
+
+  // If User is admin
+  if (!store.state.loggedInUser.type == 'admin') {
+    return redirect('/admin')
+  }
 }

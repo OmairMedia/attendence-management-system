@@ -104,6 +104,7 @@ export default {
     return {
       form: {
         id: '',
+        type: 'employee',
         email: '',
         username: '',
         password: '',
@@ -118,6 +119,17 @@ export default {
     createUserAccount() {
       const { email, password } = this.form
       this.show = true
+      let db = firebase.firestore()
+
+      db.collection('Users')
+        .add(this.form)
+        .then((docRef) => {
+          console.log('Document written with ID: ', docRef.id)
+        })
+        .catch((error) => {
+          console.error('Error adding document: ', error)
+        })
+
       firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)

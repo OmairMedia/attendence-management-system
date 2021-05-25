@@ -3,53 +3,55 @@
     <navBar />
     <b-row class="login-container">
       <b-card class="login-card">
-        <h2>Login Now</h2>
-        <b-form aria-autocomplete="false">
-          <b-form-group
-            label="Email Address:"
-            description="We'll never share your email with anyone else."
-          >
-            <b-form-input
-              v-model="form.email"
-              type="text"
-              placeholder="Enter Email"
-              :state="emailValidation"
-            ></b-form-input>
-            <b-form-valid-feedback :state="emailValidation"
-              >Perfect !</b-form-valid-feedback
+        <b-overlay :show="show" rounded="sm">
+          <h2>Employee Login Form</h2>
+          <b-form aria-autocomplete="false">
+            <b-form-group
+              label="Email Address:"
+              description="We'll never share your email with anyone else."
             >
-            <b-form-invalid-feedback :state="emailValidation"
-              >Email is not valid !</b-form-invalid-feedback
-            >
-          </b-form-group>
-          <b-form-group label="Password:">
-            <b-form-input
-              v-model="form.password"
-              type="password"
-              placeholder="Enter Password"
-              :state="passwordValidation"
-              required
-            ></b-form-input>
-            <b-form-valid-feedback :state="passwordValidation"
-              >Perfect !</b-form-valid-feedback
-            >
-            <b-form-invalid-feedback :state="passwordValidation"
-              >Password should be more than 6 Characters
-              !</b-form-invalid-feedback
-            >
-          </b-form-group>
-          <b-form-group>
-            <b-button
-              @click.prevent="loginUser"
-              @keypress.enter="loginUser"
-              variant="primary"
-              >Login</b-button
-            >
-          </b-form-group>
-          <b-form-group>
-            <b-link to="/signup">Dont Have Account ?</b-link>
-          </b-form-group>
-        </b-form>
+              <b-form-input
+                v-model="form.email"
+                type="text"
+                placeholder="Enter Email"
+                :state="emailValidation"
+              ></b-form-input>
+              <b-form-valid-feedback :state="emailValidation"
+                >Perfect !</b-form-valid-feedback
+              >
+              <b-form-invalid-feedback :state="emailValidation"
+                >Email is not valid !</b-form-invalid-feedback
+              >
+            </b-form-group>
+            <b-form-group label="Password:">
+              <b-form-input
+                v-model="form.password"
+                type="password"
+                placeholder="Enter Password"
+                :state="passwordValidation"
+                required
+              ></b-form-input>
+              <b-form-valid-feedback :state="passwordValidation"
+                >Perfect !</b-form-valid-feedback
+              >
+              <b-form-invalid-feedback :state="passwordValidation"
+                >Password should be more than 6 Characters
+                !</b-form-invalid-feedback
+              >
+            </b-form-group>
+            <b-form-group>
+              <b-button
+                @click.prevent="loginUser"
+                @keypress.enter="loginUser"
+                variant="primary"
+                >Login</b-button
+              >
+            </b-form-group>
+            <b-form-group>
+              <b-link to="/signup">Dont Have Account ?</b-link>
+            </b-form-group>
+          </b-form>
+        </b-overlay>
       </b-card>
     </b-row>
   </div>
@@ -70,6 +72,7 @@ export default {
         email: '',
         password: '',
       },
+      show: false,
     }
   },
   computed: {
@@ -102,19 +105,44 @@ export default {
   methods: {
     loginUser() {
       let { email, password } = this.form
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          let id = userCredential.user.uid
-          let name = userCredential.user.displayName
-          let photo = userCredential.user.photoURL
-          this.$store.dispatch('AuthenticateUser')
-          this.$store.dispatch('addUserProfileData', { id, name, photo })
-          this.$router.push('/')
-        })
-        .catch((err) => {
-          console.log(err)
+      this.show = true
+      let db = firebase.firestore()
+
+      db.collection('Users')
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+            let data = doc.data()
+            if (data.type == 'admin') {
+              console.log('User is admin')
+              if (
+                (doc.data().email === email) &
+                (doc.data().password === password)
+              ) {
+                this.$router.push('/admin')
+              }
+            } else {
+              // firebase
+              //   .auth()
+              //   .signInWithEmailAndPassword(email, password)
+              //   .then((userCredential) => {
+              //     let id = userCredential.user.uid
+              //     let name = userCredential.user.displayName
+              //     let photo = userCredential.user.photoURL
+              //     this.$store.dispatch('AuthenticateUser')
+              //     this.$store.dispatch('addUserProfileData', {
+              //       id,
+              //       name,
+              //       photo,
+              //     })
+              //     this.$router.push('/')
+              //   })
+              //   .catch((err) => {
+              //     console.log(err)
+              //   })
+            }
+          })
         })
     },
   },
