@@ -4,14 +4,12 @@
     <div class="wrapper">
       <section class="showcase">
         <b-row class="showcase-inner">
-          <b-col cols="6"></b-col>
           <b-col
             class="d-flex justify-content-center align-items-center"
             cols="5"
           >
             <div class="showcase-text">
               <!-- <h1 class="display-3 text-white showcase-title">ZEXOR AMS</h1> -->
-
               <!-- Showcase Title As SVG -->
               <svg
                 width="309"
@@ -150,8 +148,12 @@
               </svg>
             </div>
           </b-col>
+          <b-col cols="6"></b-col>
         </b-row>
       </section>
+      <section class="benefits-1"></section>
+      <section class="benefits-2"></section>
+      <section class="benefits-3"></section>
       <section class="technologies">
         <b-row> </b-row>
       </section>
@@ -177,7 +179,7 @@ export default Vue.extend({
 
 .showcase {
   min-height: 90vh;
-  background-image: url('@/assets/images/homepage-showcase.jpg');
+  background-image: url('@/assets/images/Showcase-Section-02.jpg');
   background-size: cover;
 }
 
@@ -201,6 +203,28 @@ export default Vue.extend({
 
 .technologies {
   min-height: 12rem;
+}
+
+.benefits-1,
+.benefits-2 {
+  min-height: 34rem;
+  background-size: cover;
+  background-position: center center;
+}
+
+.benefits-1 {
+  background-image: url('@/assets/images/feature-section-02-02-01.png');
+}
+
+.benefits-2 {
+  background-image: url('@/assets/images/feature-section-02-01.png');
+}
+
+.benefits-3 {
+  min-height: 50rem;
+  background-size: cover;
+  background-position: center center;
+  background-image: url('@/assets/images/benefits-section-03.png');
 }
 
 /* For SVG Animation */
