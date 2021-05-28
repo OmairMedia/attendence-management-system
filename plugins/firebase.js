@@ -9,6 +9,12 @@ const firebaseConfig = {
   appId: '1:560217765822:web:4a0934980cfbc6aaf7abef',
 }
 
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig)
+try {
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig)
+  } else {
+    throw 'Database Already Connected !'
+  }
+} catch (error) {
+  console.error(error)
 }
